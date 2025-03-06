@@ -15,27 +15,19 @@ permissions:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  deploy:
+  S3PackageUpload:
     runs-on: ubuntu-latest
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      - name: Deploy to S3
-        run: |
-          aws s3 sync . s3://samplehelloworldapp
+      - name: Git clone the repository
+        uses: actions/checkout@v4
 
       - name: Assume AWS Role
         with:
           role-to-assume: arn:aws:iam::820242941495:role/samplegithubrole #change to reflect your IAM role’s ARN
-          role-session-name: GitHub_to_AWS_via_FederatedOIDC    
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ap-south-1
+          
+      - name: Deploy to S3
+        run: |
+          aws s3 sync ./index.html s3://samplehelloworldapp
