@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Assume AWS Role
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::820242941495:role/samplegithubrole #change to reflect your IAM role’s ARN
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
